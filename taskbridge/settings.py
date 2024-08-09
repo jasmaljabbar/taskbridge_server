@@ -13,15 +13,22 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from pathlib import Path
 from datetime import timedelta
 import os
+import environ
+
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+env = environ.Env(DEBUG=(bool, False))
+
+environ.Env.read_env(BASE_DIR / ".env")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-3^q1eh+x_c0$7hsrw(@!y352hr_!9c-7ssmrgv1i%zxytaqh8&"
+SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -113,16 +120,16 @@ WSGI_APPLICATION = "taskbridge.wsgi.application"
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'taskbridge', 
-        'USER': 'postgres',
-        'PASSWORD': '231343',
-        'HOST': '127.0.0.1', 
+        'NAME':env("DATABASE_NAME"), 
+        'USER': env("DATABASE_USER"),
+        'PASSWORD': env("DATABASE_PASSWORD"),
+        'HOST': env("DATABASE_HOST"), 
         'PORT': '5432',
     }
 }
 
-STRIPE_SECRET_KEY = 'sk_test_51PgI85DMque14kFMh3FP6bVLGZwYE3RzJGE5CZNfuVwiSKyW6ETG7Kg2vLancv36QoweJeCQ1kwCKz2rYrUnXWBf00s6RVwxf6'
-STRIPE_PUBLISHABLE_KEY = 'pk_test_51PgI85DMque14kFMK0soU7ITSRS6gmNTJXoHaaJwK3qscHFUuOubeUTVpfGxAZgMKjCn49XdpmCdIUcGT1LAh7Sj00C6qgA4eW'
+STRIPE_SECRET_KEY = env("STRIPE_SECRET_KEY")
+STRIPE_PUBLISHABLE_KEY = env("STRIPE_PUBLISHABLE_KEY")
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -214,9 +221,9 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'jasmaljabbarghazali@gmail.com'
-EMAIL_HOST_PASSWORD = 'qrso bjfb yeit mxjk'
-DEFAULT_FROM_EMAIL = 'jasmaljabbarghazali@gmail.com'
+EMAIL_HOST_USER = env("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
+DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL")
 
 
 LOGGING = {
