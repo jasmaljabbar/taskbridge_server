@@ -49,7 +49,6 @@ django-taggit==5.0.1
 django-templated-mail==1.1.1
 django-timezone-field==7.0
 djangorestframework==3.14.0
-djangorestframework-jwt==1.11.0
 djangorestframework-simplejwt==5.3.1
 djoser==2.2.2
 filelock==3.13.3
