@@ -33,7 +33,7 @@ SECRET_KEY = env("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['20.244.47.80']
+ALLOWED_HOSTS = ['taskbridge.duckdns.org','20.244.47.80']
 
 SITE_ID = 1 
 
