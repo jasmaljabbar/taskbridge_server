@@ -202,7 +202,15 @@ SIMPLE_JWT = {
 }
 
 
-CORS_ALLOWED_ORIGINS = ["http://localhost:5173"]
+CORS_ALLOWED_ORIGINS = ["https://taskbridge-client.onrender.com/"]
+
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://taskbridge-client.onrender.com/",
+    "https://20.244.47.80",
+    "https://taskbridge.duckdns.org",
+]
+
 
 DEBUG = True
 
