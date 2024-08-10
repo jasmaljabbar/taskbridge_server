@@ -120,7 +120,7 @@ class CreateCheckoutSessionView(APIView):
         price_in_cents = int(price_obj.price * 100)
 
         try:
-            frontend_base_url = "http://localhost:5173"  # Your React app's base URL
+            frontend_base_url = "https://taskbridge-client.onrender.com"  # Your React app's base URL
             success_url = f"{frontend_base_url}/checkout_success?subscription_type={subscription_type}"
             cancel_url = f"{frontend_base_url}/checkout_cancel?subscription_type={subscription_type}"
             

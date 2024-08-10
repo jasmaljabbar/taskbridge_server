@@ -75,6 +75,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 
 ASGI_APPLICATION = "chat.routing.application"

@@ -10,7 +10,7 @@ class CreateCheckoutSessionView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request, *args, **kwargs):
-        YOUR_DOMAIN = 'http://localhost:5173/'  # Change to your domain
+        YOUR_DOMAIN = 'https://taskbridge-client.onrender.com/'  # Change to your domain
         try:
             checkout_session = stripe.checkout.Session.create(
                 payment_method_types=['card'],
