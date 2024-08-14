@@ -2,7 +2,7 @@ from django.urls import path, include
 from adminside.views import (
     AdminLogin, Dashboard, Block_user, Blocking_tasker, Accepting_request, 
     EditUser, Tasker_Listing, Work_Listing, WorkCategoryAdding, 
-    EditWorkCategory, BlockWorkCategory, TaskerDetails
+    EditWorkCategory, BlockWorkCategory, TaskerDetails, UserTasker_request
 )
 from rest_framework.routers import DefaultRouter
 from .views import SubscriptionPriceViewSet
@@ -13,6 +13,7 @@ router.register(r'subscription-prices', SubscriptionPriceViewSet)
 urlpatterns = [
     path("admin_login/", AdminLogin.as_view(), name="admin_login"),
     path("dashboard/", Dashboard.as_view(), name="dashboard"),
+     path("tasker_request/", UserTasker_request.as_view(), name="dashboard"),
     path("accepting_request/", Accepting_request.as_view(), name="accepting_request"),
     path("blocking_tasker/", Blocking_tasker.as_view(), name="blocking_tasker"),
     path("user_action/", Block_user.as_view(), name="user_action"),

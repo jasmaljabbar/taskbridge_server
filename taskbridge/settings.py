@@ -202,7 +202,7 @@ SIMPLE_JWT = {
 }
 
 
-CORS_ALLOWED_ORIGINS = ["https://taskbridge-client.onrender.com/"]
+CORS_ALLOWED_ORIGINS = ["https://taskbridge-client.onrender.com"]
 
 
 CSRF_TRUSTED_ORIGINS = [

@@ -1,6 +1,7 @@
 import json
 from asgiref.sync import async_to_sync, sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
+from chat.api.serializer import ChatSerializer
 from chat.models import Chat
 from channels.db import database_sync_to_async
 
@@ -35,14 +36,16 @@ class TextConsumer(AsyncWebsocketConsumer):
             await self.mark_message_as_read(text_data)
         else:
             message = text_data_json.get('message')
+            image_url = text_data_json.get('image_url')
             sender_id = text_data_json.get('sender', {}).get('id')
             recipient_id = text_data_json.get('receiver', {}).get('id')
 
-            if not message or sender_id is None or recipient_id is None:
+            if (not message and not image_url) or sender_id is None or recipient_id is None:
                 print("Invalid message format:", text_data_json)
                 return
 
-            chat_message = await self.save_chat_message(message, sender_id, recipient_id)
+            thread_name = f"{min(sender_id, recipient_id)}_{max(sender_id, recipient_id)}"
+            chat_message = await self.save_chat_message(message, sender_id, recipient_id, image_url, thread_name)
 
             messages = await self.get_messages(sender_id, recipient_id)
         
@@ -52,9 +55,40 @@ class TextConsumer(AsyncWebsocketConsumer):
                     'type': 'chat_message',
                     'messages': messages,
                     'sender_id': sender_id,
-                    'message': message
+                    'message': message,
+                    'image_url': image_url
                 }
             )
+
+    async def chat_message(self, event):
+        messages = event.get('messages', [])
+        sender_id = event.get('sender_id')
+        message = event.get('message')
+        image_url = event.get('image_url')
+
+        await self.send(text_data=json.dumps({
+            'messages': messages,
+            'sender': {'id': sender_id},
+            'message': message,
+            'image_url': image_url
+        }))
+
+    @database_sync_to_async
+    def save_chat_message(self, message, sender_id, recipient_id, image_url, thread_name):
+        return Chat.objects.create(
+            message=message,
+            sender_id=sender_id,
+            receiver_id=recipient_id,
+            image_url=image_url,
+            thread_name=thread_name
+        )
+
+    @database_sync_to_async
+    def get_messages(self, sender_id, recipient_id):
+        
+        thread_name = f"{min(sender_id, recipient_id)}_{max(sender_id, recipient_id)}"
+        messages = Chat.objects.filter(thread_name=thread_name).order_by('date')
+        return ChatSerializer(messages, many=True).data
 
     async def mark_message_as_read(self, text_data):
         data = json.loads(text_data)
@@ -71,37 +105,6 @@ class TextConsumer(AsyncWebsocketConsumer):
             pass
 
 
-
-    async def chat_message(self, event):
-        messages = event.get('messages', [])
-        sender_id = event.get('sender_id')
-        message = event.get('message')
-
-        await self.send(text_data=json.dumps({
-            'messages': messages,
-            'sender': {'id': sender_id},
-            'message': message
-        }))
-
-
-    @database_sync_to_async
-    def save_chat_message(self, message, sender_id, recipient_id):
-        return Chat.objects.create(message=message, sender_id=sender_id, receiver_id=recipient_id)
-
-    @database_sync_to_async
-    def mark_as_read(self, chat_message):
-        chat_message.mark_as_read()
-
-    @database_sync_to_async
-    def get_messages(self, sender, recipient_id):
-        from .models import Chat
-        from chat.api.serializer import ChatSerializer
-
-        messages = []
-        for instance in Chat.objects.filter(sender__in=[sender, recipient_id], receiver__in=[sender, recipient_id]):
-            messages.append(ChatSerializer(instance).data)
-
-        return messages
 
 
 class NotificationConsumer(AsyncWebsocketConsumer):

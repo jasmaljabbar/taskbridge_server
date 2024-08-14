@@ -6,7 +6,7 @@ class Chat(models.Model):
     sender = models.ForeignKey(UserData, on_delete=models.SET_NULL, related_name='send_message', null=True, blank=True)
     receiver = models.ForeignKey(UserData, on_delete=models.SET_NULL, related_name='receiver_message', null=True, blank=True)
     message = models.TextField()
-    image = models.URLField(blank=True, null=True)
+    image_url = models.URLField(max_length=255, null=True, blank=True)
     thread_name = models.CharField(max_length=200, null=True)
     date = models.DateTimeField(auto_now_add=True)
     is_read = models.BooleanField(default=False)

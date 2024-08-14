@@ -30,7 +30,7 @@ class ChatSerializer(ModelSerializer):
     receiver = UserChatSeralizer(read_only = True)
     class Meta:
         model = Chat
-        fields = ['id', 'sender', 'receiver', 'message', 'image', 'date', 'is_read']
+        fields = ['id', 'sender', 'receiver', 'message', 'image_url', 'date', 'is_read']
 
         
 

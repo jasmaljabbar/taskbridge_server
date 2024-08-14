@@ -62,6 +62,12 @@ class Dashboard(APIView):
         return Response(serializer.data)
     
 
+class UserTasker_request(APIView):
+    def get(self,requst):
+        users = UserData.objects.filter(requested_to_tasker=True)
+        serializer = UserDataSerializer(users,many=True)
+        return Response(serializer.data)  
+
 
 
 class Accepting_request(APIView):
