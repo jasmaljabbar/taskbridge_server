@@ -78,7 +78,7 @@ MIDDLEWARE = [
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 
-ASGI_APPLICATION = "chat.routing.application"
+# ASGI_APPLICATION = "chat.routing.application"
 
 ROOT_URLCONF = "taskbridge.urls"
 
