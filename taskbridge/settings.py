@@ -33,7 +33,7 @@ SECRET_KEY = env("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'taskbridge-server.onrender.com']
 
 SITE_ID = 1 
 
@@ -208,7 +208,7 @@ CORS_ALLOWED_ORIGINS = ["https://taskbridge-client.onrender.com"]
 CSRF_TRUSTED_ORIGINS = [
     "https://taskbridge-client.onrender.com/",
     "https://20.244.47.80",
-    "https://taskbridge.duckdns.org",
+    "https://taskbridge-server.onrender.com",
 ]
 
 
