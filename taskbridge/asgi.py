@@ -1,6 +1,4 @@
 import os
-import django
-django.setup()
 from django.core.asgi import get_asgi_application
 from channels.routing import ProtocolTypeRouter, URLRouter
 from channels.auth import AuthMiddlewareStack
@@ -9,6 +7,9 @@ from chat.consumers import TextConsumer
 
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "taskbridge.settings")
+
+import django
+django.setup()
 
 websocket_urlpatterns = [
     re_path(r'^ws/chat/(?P<room_name>[\w_]+)/$', TextConsumer.as_asgi()),
