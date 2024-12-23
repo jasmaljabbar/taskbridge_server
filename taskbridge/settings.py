@@ -101,17 +101,13 @@ CHANNEL_LAYERS = {
 
 
 STORAGES = {
-    "default": {
+    "default":{
         "BACKEND": "django.core.files.storage.FileSystemStorage",
-        "OPTIONS": {
-            # Add options if required, e.g., location, base_url
-        }
     },
     "staticfiles": {
-        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+        "BACKEND":"whitenoise.storage.CompressedStaticFilesStorage",
     },
 }
-
 
 
 
