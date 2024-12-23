@@ -11,12 +11,11 @@ from dashboard.models import SubscriptionIncome
 class WorkCategory(models.Model):
     name = models.CharField(max_length=100, unique=True)
     description = models.TextField(blank=True, null=True)
-    work_image = models.ImageField(verbose_name=_("Work Image"), upload_to='work_image/', default="")
+    work_image = models.URLField(max_length=500, verbose_name=_("Work Image URL"), blank=True)
     blocked = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
-
 
 class Tasker(models.Model):
     SUBSCRIPTION_CHOICES = [
@@ -35,18 +34,17 @@ class Tasker(models.Model):
         validators=[RegexValidator(r'^\d{12}$', message="Aadhar number must be 12 digits")]
     )
     address = models.TextField()
-    work_photo = models.ImageField(verbose_name=_("Work Photo"), upload_to='work_photos/', default="")
+    work_photo = models.URLField(max_length=500, verbose_name=_("Work Photo URL"), blank=True)
     task = models.ForeignKey(WorkCategory, on_delete=models.CASCADE)
     task_fee = models.DecimalField(max_digits=10, decimal_places=2)
     city = models.CharField(max_length=100)
     state = models.CharField(max_length=100)
     admin_approval = models.BooleanField(default=False)
-    subscribed = models.BooleanField(default=False) 
+    subscribed = models.BooleanField(default=False)
     subscription_type = models.CharField(max_length=10, choices=SUBSCRIPTION_CHOICES, default='monthly')
     subscription_start_date = models.DateTimeField(null=True, blank=True)
     subscription_end_date = models.DateTimeField(null=True, blank=True)
     rating = models.IntegerField(null=True, default=0)
-
 
     def __str__(self):
         return self.full_name
