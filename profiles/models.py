@@ -21,7 +21,7 @@ class Profile(TimeStampedUUIDModel):
     email = models.EmailField(verbose_name=_("Email"), max_length=100, unique=True, default='email')
     address = models.CharField(max_length=250)
     phone_number = models.CharField(max_length=15, blank=True, null=True, verbose_name="Phone Number")
-    profile_photo = models.ImageField(verbose_name=_("Profile Photo"), upload_to='profile_photos/', default="")
+    profile_photo = models.URLField(max_length=255, null=True, blank=True)
     gender = models.CharField(verbose_name=_("Gender"), choices=Gender.choices, default=Gender.OTHER, max_length=20)
     city = models.CharField(verbose_name=_("City"), max_length=180)
     is_tasker = models.BooleanField(verbose_name=_("Tasker"), default=False, help_text=_("Are you looking for a Tasker?"))
