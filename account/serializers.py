@@ -102,6 +102,7 @@ class TaskerHomeSerializer(serializers.ModelSerializer):
             "subscribed",
             "profile_pic",
         ]
-
-    def get_profile_pic(self, obj):
-        return obj.user.profile_pic.url if obj.user.profile_pic else None
+        
+def get_profile_pic(self, obj):
+    # Just return the URL directly from the model
+    return obj.user.profile_pic if obj.user.profile_pic else None
