@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
-import cloudinary_storage
 from datetime import timedelta
 import os
 import environ
@@ -101,17 +100,13 @@ CHANNEL_LAYERS = {
 
 
 STORAGES = {
-    "default": {
+    "default":{
         "BACKEND": "django.core.files.storage.FileSystemStorage",
-        "OPTIONS": {
-            # Add options if required, e.g., location, base_url
-        }
     },
     "staticfiles": {
-        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+        "BACKEND":"whitenoise.storage.CompressedStaticFilesStorage",
     },
 }
-
 
 
 
@@ -223,8 +218,8 @@ DEBUG = True
 
 
 
-# MEDIA_URL = "/media/"
-# MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 DJOSER = {
     "LOGIN_FIELD": "email",
@@ -253,16 +248,6 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = env("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
 DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL")
-
-# Cloudinary settings
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': env('CLOUDINARY_CLOUD_NAME'),
-    'API_KEY': env('CLOUDINARY_API_KEY'),
-    'API_SECRET': env('CLOUDINARY_API_SECRET')
-}
-
-DEFAULT_FILE_STORAGE = "django.core.files.storage.FileSystemStorage"
-
 
 
 LOGGING = {
