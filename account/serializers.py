@@ -13,7 +13,7 @@ from profiles.models import Profile
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserData
-        fields = ['id', 'email', 'name', 'password', 'is_verified', 'otp','payment_time']
+        fields = ['id', 'email', 'name', 'password','profile_pic', 'is_verified', 'otp','payment_time']
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
@@ -102,7 +102,7 @@ class TaskerHomeSerializer(serializers.ModelSerializer):
             "subscribed",
             "profile_pic",
         ]
-        
-def get_profile_pic(self, obj):
-    # Just return the URL directly from the model
-    return obj.user.profile_pic if obj.user.profile_pic else None
+
+    def get_profile_pic(self, obj):
+        # Accessing the 'profile_pic' from the related 'UserData' model
+        return obj.user.profile_pic if obj.user.profile_pic else None
