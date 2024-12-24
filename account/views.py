@@ -69,7 +69,7 @@ class UserIndivualView(RetrieveUpdateDestroyAPIView):
 
 @permission_classes([AllowAny])
 class RegisterView(APIView):
-    def post(self, request, *args, **kwargs):
+     def post(self, request, *args, **kwargs):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save()

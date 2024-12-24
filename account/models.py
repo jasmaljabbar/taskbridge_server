@@ -1,6 +1,5 @@
 from django.db import models
 from django.conf import settings
-from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 
 class UserManager(BaseUserManager):
@@ -41,7 +40,7 @@ class UserData(AbstractUser):
     is_verified = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
-    profile_pic = models.URLField(max_length=255, null=True, blank=True, verbose_name=_("Profile Picture URL"))
+    profile_pic = models.ImageField(upload_to="profile_pics/", blank=True, null=True)
     
     objects = UserManager()
 
