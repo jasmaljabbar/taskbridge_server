@@ -19,7 +19,7 @@ class Gender(models.TextChoices):
 class Profile(TimeStampedUUIDModel):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     email = models.EmailField(verbose_name=_("Email"), max_length=100, unique=True)
-    address = models.CharField(max_length=250, blank=True, null=True)
+    address = models.CharField(max_length=255, default="Default Address")
     phone_number = models.CharField(max_length=15, blank=True, null=True, verbose_name="Phone Number")
     profile_photo = models.URLField(max_length=255, null=True, blank=True)
     gender = models.CharField(verbose_name=_("Gender"), choices=Gender.choices, default=Gender.OTHER, max_length=20)
