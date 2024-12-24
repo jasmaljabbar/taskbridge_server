@@ -13,12 +13,21 @@ from profiles.models import Profile
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserData
-        fields = ['id', 'email', 'name', 'password','profile_pic', 'is_verified', 'otp','payment_time']
+        fields = ['id', 'email', 'name', 'password', 'profile_pic', 'is_verified', 'otp', 'payment_time']
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
+        # Check for existing email or name
+        if UserData.objects.filter(email=validated_data['email']).exists():
+            raise serializers.ValidationError({'email': 'A user with this email already exists.'})
+        
+        if UserData.objects.filter(name=validated_data['name']).exists():
+            raise serializers.ValidationError({'name': 'A user with this name already exists.'})
+
+        # Create the user
         user = UserData.objects.create_user(**validated_data)
         return user
+
 
 class OtpSerializer(serializers.Serializer):
     otp = serializers.CharField(max_length=6)

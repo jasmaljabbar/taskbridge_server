@@ -17,6 +17,7 @@ from datetime import timedelta
 from rest_framework.generics import RetrieveUpdateDestroyAPIView
 from .models import UserData
 from rest_framework_simplejwt.views import TokenObtainPairView
+from django.db import transaction
 from task_workers.models import Tasker
 from task_workers.models import WorkCategory
 from task_workers.serializers import WorkCategorySerializer,TaskerFetchingSerializer
@@ -67,24 +68,30 @@ class UserIndivualView(RetrieveUpdateDestroyAPIView):
     queryset = UserData.objects.all()
 
 
+
 @permission_classes([AllowAny])
 class RegisterView(APIView):
-     def post(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
-            user = serializer.save()
+            try:
+                with transaction.atomic():
+                    user = serializer.save()
 
-            otp = generate_otp()
-            user.otp = otp
-            user.otp_time = timezone.now()
-            print(otp)
-            user.save()
+                    otp = generate_otp()
+                    user.otp = otp
+                    user.otp_time = timezone.now()
+                    print(otp)
+                    user.save()
 
-            send_otp_email(user.email, otp)
+                    send_otp_email(user.email, otp)
 
-            return Response({'message': 'User registered successfully. OTP sent to your email.'}, status=status.HTTP_201_CREATED)
+                return Response({'message': 'User registered successfully. OTP sent to your email.'}, status=status.HTTP_201_CREATED)
+            except Exception as e:
+                return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 @permission_classes([AllowAny])    
 class ResendOtpView(APIView):
