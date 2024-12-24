@@ -2,7 +2,6 @@ from django.db import models
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import AbstractUser, BaseUserManager
-from django.core.validators import RegexValidator
 
 class UserManager(BaseUserManager):
     use_in_migration = True
@@ -28,34 +27,29 @@ class UserManager(BaseUserManager):
         return self.create_user(email, password, **extra_fields)
 
 class UserData(AbstractUser):
-    username = None  # Disable username for email-based authentication
-    name = models.CharField(max_length=100, unique=True, verbose_name=_("Full Name"))
-    email = models.EmailField(max_length=100, unique=True, verbose_name=_("Email Address"))
-    otp = models.CharField(
-        max_length=6, 
-        blank=True, 
-        null=True, 
-        validators=[RegexValidator(r'^\d{6}$', message=_("OTP must be a 6-digit number."))]
-    )
-    otp_time = models.DateTimeField(blank=True, null=True, verbose_name=_("OTP Generated Time"))
+    username = None
+    name = models.CharField(max_length=100, unique=True)
+    email = models.EmailField(max_length=100, unique=True)
+    otp = models.CharField(max_length=6, blank=True, null=True)
+    otp_time = models.DateTimeField(blank=True, null=True)
     date_joined = models.DateTimeField(auto_now_add=True)
-    requested_to_tasker = models.BooleanField(default=False, verbose_name=_("Requested Tasker"))
-    payment_pending = models.BooleanField(default=False, verbose_name=_("Payment Pending"))
-    blocked_for_tasker = models.BooleanField(default=False, verbose_name=_("Blocked for Tasker"))
+    requested_to_tasker = models.BooleanField(default=False)
+    payment_time = models.BooleanField(default=False)
+    blocked_for_tasker = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
-    is_verified = models.BooleanField(default=False, verbose_name=_("Is Verified"))
+    is_verified = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     profile_pic = models.URLField(max_length=255, null=True, blank=True, verbose_name=_("Profile Picture URL"))
-
+    
     objects = UserManager()
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["name"]
 
     def __str__(self):
-        return self.name if self.name else self.email
+        return self.name
 
 
 
