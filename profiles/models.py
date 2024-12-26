@@ -19,11 +19,12 @@ class Gender(models.TextChoices):
 class Profile(TimeStampedUUIDModel):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     email = models.EmailField(verbose_name=_("Email"), max_length=100, unique=True, blank=True, null=True)
-    address = models.CharField(max_length=250)
+    # Add null=True and blank=True to these fields
+    address = models.CharField(max_length=250, blank=True, null=True)  # Modified
     phone_number = models.CharField(max_length=15, blank=True, null=True, verbose_name="Phone Number")
     profile_photo = models.URLField(verbose_name=_("Profile Photo"), blank=True, null=True)
     gender = models.CharField(verbose_name=_("Gender"), choices=Gender.choices, default=Gender.OTHER, max_length=20)
-    city = models.CharField(verbose_name=_("City"), max_length=180)
+    city = models.CharField(verbose_name=_("City"), max_length=180, blank=True, null=True)  # Modified
     is_tasker = models.BooleanField(verbose_name=_("Tasker"), default=False, help_text=_("Are you looking for a Tasker?"))
 
     def __str__(self):
