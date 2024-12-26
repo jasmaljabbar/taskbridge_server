@@ -19,20 +19,20 @@ class GetProfileAPIView(APIView):
 
 class UpdateProfileAPIView(APIView):
     permission_classes = [permissions.IsAuthenticated]
-    renderer_classes = [ProfileJSONRenderer]
     serializer_class = UpdateProfileSerializer
 
     def put(self, request):
         try:
-            user_profile = Profile.objects.get(user=self.request.user)
+            user_profile = Profile.objects.get(user=request.user)
         except Profile.DoesNotExist:
-            raise ProfileNotFound("Profile not found")
+            return Response({"error": "Profile not found"}, status=status.HTTP_404_NOT_FOUND)
 
-        data = request.data 
-        serializer = UpdateProfileSerializer(instance=user_profile, data=data, partial=True)
-        
+        data = request.data  # Includes profile_photo as a URL
+        serializer = self.serializer_class(instance=user_profile, data=data, partial=True)
+
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
