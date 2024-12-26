@@ -24,3 +24,4 @@ def update_user_profile_pic(sender, instance, **kwargs):
     if user.profile_pic != instance.profile_photo:  # Update only if there's a change
         user.profile_pic = instance.profile_photo
         user.save(update_fields=['profile_pic'])  # Only update profile_pic field
+
