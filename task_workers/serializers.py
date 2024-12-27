@@ -44,7 +44,7 @@ class TaskerSerializer(serializers.ModelSerializer):
 class TaskerFetchingSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
     task = WorkCategorySerializer(read_only=True)
-    profile_pic = serializers.ImageField(source='user.profile_pic', read_only=True)
+    profile_pic = serializers.SerializerMethodField()
 
     class Meta:
         model = Tasker
