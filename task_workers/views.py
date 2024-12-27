@@ -248,7 +248,6 @@ class TaskerProfileView(generics.RetrieveUpdateAPIView):
 
     def get_object(self):
         tasker = Tasker.objects.get(user=self.request.user)
-        print(tasker)
         return tasker
     
 

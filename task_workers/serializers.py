@@ -49,7 +49,7 @@ class TaskerFetchingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tasker
         fields = [
-            'user', 'full_name','profile_pic', 'phone_number', 'aadhar_number', 'task', 'task_fee',
+            'user', 'full_name', 'profile_pic', 'phone_number', 'aadhar_number', 'task', 'task_fee',
             'city', 'state', 'address', 'work_photo'
         ]
 
