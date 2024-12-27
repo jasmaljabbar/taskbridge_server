@@ -52,7 +52,8 @@ class TaskerFetchingSerializer(serializers.ModelSerializer):
             'user', 'full_name', 'profile_pic', 'phone_number', 'aadhar_number', 'task', 'task_fee',
             'city', 'state', 'address', 'work_photo'
         ]
-
+    def get_profile_pic(self, obj):
+        return obj.user.profile_pic if obj.user and obj.user.profile_pic else None
 
 
 
