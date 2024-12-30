@@ -64,7 +64,7 @@ class TaskerUpdateSerializer(serializers.ModelSerializer):
     city = serializers.CharField(max_length=50, required=False)
     state = serializers.CharField(max_length=50, required=False)
     address = serializers.CharField(max_length=255, required=False)
-    work_photo = serializers.ImageField(required=False)
+    work_photo = serializers.URLField(required=False)
 
     class Meta:
         model = Tasker
@@ -80,7 +80,7 @@ class TaskerUpdateSerializer(serializers.ModelSerializer):
         instance.city = validated_data.get('city', instance.city)
         instance.state = validated_data.get('state', instance.state)
         instance.address = validated_data.get('address', instance.address)
-        instance.work_photo = validated_data.get('work_photo', instance.work_photo)
+        instance.work_photo = validated_data.get('work_photo', instance.work_photo)  # Save URL here
 
         task = validated_data.get('task')
         task_fee = validated_data.get('task_fee')
